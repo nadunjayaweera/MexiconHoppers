@@ -61,6 +61,7 @@ export default function Orders() {
           name: sale.customerName,
           orderid: sale.orderId,
           amount: sale.totalPrice,
+          products: sale.products.map((product) => `${product.productName} - ${product.quantity}`).join(', '),
         }));
 
         console.log('Sales Data:', formattedSalesData);
@@ -78,6 +79,7 @@ export default function Orders() {
     { field: 'orderid', headerName: 'OrderID', width: 100 },
     { field: 'date', headerName: 'Date', width: 250 },
     { field: 'name', headerName: 'Name', width: 250 },
+    { field: 'products', headerName: 'Products', width: 250 }, 
     { field: 'amount', headerName: 'Amount (Rs. )', type: 'number', width: 100 },
   ];
 
