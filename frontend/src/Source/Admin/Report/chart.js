@@ -87,13 +87,13 @@ const MonthlySales = () => {
 const Chart = () => {
   const theme = useTheme();
   const data = useSalesData('daily');
-  
+  const reversedData = data.slice(0, 30).reverse();
   return (
     <React.Fragment>
       <Title>Sales for Each Day in the Month</Title>
       <ResponsiveContainer width="100%" height={175}>
         <LineChart
-          data={data}
+          data={reversedData}
           margin={{
             top: 16,
             right: 16,
