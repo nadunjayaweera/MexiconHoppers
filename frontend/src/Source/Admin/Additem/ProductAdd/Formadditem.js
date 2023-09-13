@@ -97,7 +97,7 @@ export default function FormAddProduct() {
 
   const updatedFormData = { ...formData, promotionStatus: promotionStatus };
 
-  fetch("http://acdassanayake.me:8080/api/v1/additem", {
+  fetch("http://mexicanhoppers.com:8080/api/v1/additem", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -38,7 +38,7 @@ export default function SignUpPage() {
       return;
     }
 
-    fetch('http://acdassanayake.me:8080/api/v1/signup', {
+    fetch('http://mexicanhoppers.com:8080/api/v1/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

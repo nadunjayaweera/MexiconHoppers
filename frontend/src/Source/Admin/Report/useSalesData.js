@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 
-const useSalesData = (dataType) => {
+const useSalesData = (dataType, numberOfDays) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     // Fetch sales data from backend API
-    fetch('http://acdassanayake.me:8080/api/v1/getsales')
+    fetch('http://mexicanhoppers.com:8080/api/v1/getsales')
       .then((response) => response.json())
       .then((salesData) => {
         // Process the sales data based on the dataType parameter
-        const processedData = dataType === 'monthly' ? processMonthlyData(salesData) : processDailyData(salesData);
+        const processedData =
+          dataType === 'monthly'
+            ? processMonthlyData(salesData)
+            : processDailyData(salesData, numberOfDays); // Pass the numberOfDays parameter
 
         setData(processedData);
       })
       .catch((error) => console.error('Error fetching sales data:', error));
-  }, [dataType]);
+  }, [dataType, numberOfDays]); // Include numberOfDays in the dependency array
 
   // Process monthly data
   const processMonthlyData = (salesData) => {
@@ -39,9 +42,20 @@ const useSalesData = (dataType) => {
     return Object.values(groupedData);
   };
 
-  // Process daily data
-  const processDailyData = (salesData) => {
-    const groupedData = salesData.reduce((result, item) => {
+  // Process daily data and return the last 'numberOfDays' days
+  const processDailyData = (salesData, numberOfDays) => {
+    // Sort sales data by timestamp in descending order (most recent first)
+    const sortedData = salesData.sort((a, b) => {
+      const dateA = new Date(a.timestamp);
+      const dateB = new Date(b.timestamp);
+      return dateB - dateA;
+    });
+
+    // Select the last 'numberOfDays' items (most recent 'numberOfDays' days)
+    const lastNDaysData = sortedData.slice(0, numberOfDays);
+
+    // Group data by date and calculate total sales for each day
+    const groupedData = lastNDaysData.reduce((result, item) => {
       const date = item.timestamp.split(',')[0].trim();
       if (result[date]) {
         result[date].amount += parseInt(item.totalPrice);
