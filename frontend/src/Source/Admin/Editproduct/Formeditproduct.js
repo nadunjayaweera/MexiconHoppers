@@ -110,7 +110,7 @@ export default function FormEditProduct() {
 
     const updatedFormData = { ...formData, promotionStatus: promotionStatus };
 
-    fetch(`http://mexicanhoppers.com:8080/api/v1/updateproduct/${currentProductId}`, {
+    fetch(`https://mexicanhoppers.com:8080/api/v1/updateproduct/${currentProductId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

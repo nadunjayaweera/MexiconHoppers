@@ -88,7 +88,7 @@ let hash            = md5(merchantId + orderId + amountFormated + currency + has
 
     try {
       const addSaleResponse = await axios.post(
-        "http://mexicanhoppers.com:8080/api/v1/addsale",
+        "https://mexicanhoppers.com:8080/api/v1/addsale",
         apiData
       );
 

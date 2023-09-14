@@ -57,7 +57,7 @@ export default function ProductList() {
   React.useEffect(() => {
     const fetchSalesData = async () => {
       try {
-        const response = await axios.get('http://mexicanhoppers.com:8080/api/v1/data/items');
+        const response = await axios.get('https://mexicanhoppers.com:8080/api/v1/data/items');
         console.log('API Response:', response.data);
 
         const formattedSalesData = response.data.map((sale, index) => ({
@@ -88,7 +88,7 @@ export default function ProductList() {
   const handleDelete = (pid) => {
     const confirmed = window.confirm('Are you sure you want to delete this row?');
     if (confirmed) {
-      fetch(`http://mexicanhoppers.com:8080/api/v1/deleteitem/${pid}`, {
+      fetch(`https://mexicanhoppers.com:8080/api/v1/deleteitem/${pid}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
