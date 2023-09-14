@@ -44,7 +44,7 @@ const Items = () => {
   const {cartData, setCartDataHandler} = useCartCtx();
   useEffect(() => {
     setIsLoading(true);
-    fetch('https://mexicanhoppers.com:8080/api/v1/data/items')
+    fetch('http://mexicanhoppers.com:8080/api/v1/data/items')
       .then(response => response.json())
       .then(data => {
         setItems(data);

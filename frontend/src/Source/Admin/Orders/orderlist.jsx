@@ -57,7 +57,7 @@ export default function ProductList() {
   React.useEffect(() => {
     const fetchSalesData = async () => {
       try {
-        const response = await axios.get("https://mexicanhoppers.com:8080/api/v1/getsales");
+        const response = await axios.get("http://mexicanhoppers.com:8080/api/v1/getsales");
         const salesData = response.data;
         const currentDate = new Date().toISOString().split("T")[0];
         salesData.sort((a, b) => new Date(b.orderId) - new Date(a.orderId));
@@ -199,10 +199,10 @@ export default function ProductList() {
  const handleUpdateStatus = async (feeldid) => {
   try {
     // Make an API request to update the order status
-    await axios.put(`https://mexicanhoppers.com:8080/api/v1/${feeldid}/update-data`, {});
+    await axios.put(`http://mexicanhoppers.com:8080/api/v1/${feeldid}/update-data`, {});
 
     // Fetch the updated sales data
-    const response = await axios.get("https://mexicanhoppers.com:8080/api/v1/getsales");
+    const response = await axios.get("http://mexicanhoppers.com:8080/api/v1/getsales");
     const updatedSalesData = response.data.map((product, index) => ({
       id: index + 1,
       feeldid: product._id,

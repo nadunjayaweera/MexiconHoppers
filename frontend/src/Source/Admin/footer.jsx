@@ -23,7 +23,7 @@ const handleclose = ()=>{
 } 
   const fetchSalesData = async () => {
     try {
-      const response = await axios.get("https://mexicanhoppers.com:8080/api/v1/getsales");
+      const response = await axios.get("http://mexicanhoppers.com:8080/api/v1/getsales");
       const salesData = response.data;
       const lastElement = salesData[salesData.length - 1].orderId;
 

@@ -8,7 +8,7 @@ const OrderList = () => {
     const fetchOrders = async () => {
       try {
         const email = localStorage.getItem("userEmail");
-        const response = await fetch(`https://mexicanhoppers.com:8080/api/v1/getuserorders/${email}`);
+        const response = await fetch(`http://mexicanhoppers.com:8080/api/v1/getuserorders/${email}`);
         if (response.ok) {
           const data = await response.json();
           console.log("Mapping data:", data);

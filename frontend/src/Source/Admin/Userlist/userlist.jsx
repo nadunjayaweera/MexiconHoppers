@@ -75,7 +75,7 @@ export default function Users() {
   ];
   
   React.useEffect(() => {
-  fetch('http://acdassanayake.me:8080/api/v1/users')
+  fetch('http://mexicanhoppers.com:8080/api/v1/users')
     .then(response => response.json())
     .then(data => {
       const rows = data.map(row => ({ ...row, id: row.userId }));

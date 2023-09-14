@@ -153,7 +153,7 @@ const CheckoutPage = () => {
   const pay = async (event) => {
     try {
       const addSaleResponse = await axios.post(
-        "https://mexicanhoppers.com:8080/api/v1/addsale",
+        "https://mexicanhopper.com:8080/api/v1/addsale",
         apiData
       );
 

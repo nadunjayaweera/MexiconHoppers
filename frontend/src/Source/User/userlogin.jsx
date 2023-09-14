@@ -20,7 +20,7 @@ export default function Userlogin() {
     const email = document.querySelector('input[name="email"]').value;
     const password = document.querySelector('input[name="password"]').value;
 
-    const response = await fetch("https://mexicanhoppers.com:8080/api/v1/login", {
+    const response = await fetch("http://mexicanhoppers.com:8080/api/v1/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
