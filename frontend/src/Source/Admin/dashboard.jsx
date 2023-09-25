@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems } from './listitems';
-import {Chart, MonthlySales} from './Report/chart';
+import {Chart, MonthlySales, Topsell} from './Report/chart';
 // import Orders from '../Sales/Orders';
 import { AppBar, Drawer, mdTheme } from './Structure';
 import Footer from '../footer'
@@ -155,7 +155,7 @@ export default function DashboardContent() {
               <Grid item xs={12}>
                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
                   <div>
-                    {/* <Title>Recent Sales</Title> */}
+                    <Topsell/>
                   </div>
                   {/* <Orders/> */}
                 </Paper>

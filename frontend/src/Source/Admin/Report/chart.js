@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useState
 import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, BarChart, Bar, Pie } from 'recharts';
 import Title from '../title';
 import { EventTracker } from '@devexpress/dx-react-chart';
-import useSalesData from './useSalesData'; // Import the custom hook
+import useSalesData from './useSalesData';
+
+
+import { PieChart } from '@mui/x-charts/PieChart';
 
 const monthLabels = [
   "January", "February", "March", "April", "May", "June", "July",
@@ -83,6 +86,69 @@ const MonthlySales = () => {
   );
 };
 
+const Topsell = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Make a GET request to your API
+    fetch('http://localhost:8080/api/v1/data/sales?date=September%2020,%202023')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((apiData) => {
+        console.log('API Data:', apiData);
+        if (Array.isArray(apiData) && apiData.length > 0) {
+          // Process the data into the format expected by PieChart
+          const chartData = apiData.map((item) => ({
+            id: item._id, // Assuming you want to use _id as the id property
+            value: item.totalQuantity,
+            label: item._id, // You can use _id as the label property
+          }));
+          console.log("Chart:chartData", chartData);
+          setData(chartData);
+        } else {
+          setData([]); // Set an empty array if there's no data
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div>
+      <h2>Top Selling Items</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+          {data.length > 0 ? (
+            <PieChart
+              series={[
+                {
+                  data: data, // Use chartData here
+                },
+              ]}
+              width={500}
+              height={500}
+            />
+          ) : (
+            <p>No data available.</p>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+
+
 
 const Chart = () => {
   const theme = useTheme();
@@ -137,4 +203,7 @@ const Chart = () => {
   );
 };
 
-export { Chart, MonthlySales };
+
+
+
+export { Chart, MonthlySales, Topsell };

@@ -12,5 +12,6 @@ router.post("/addsale", DataController.addSale);
 router.get("/getsales", DataController.getSale); 
 router.put("/updatedata", DataController.updateData); 
 router.get("/getuserorders/:email", DataController.getUserOrders);
+router.get("/sales", DataController.getSalesByDate);
 
 export default router;

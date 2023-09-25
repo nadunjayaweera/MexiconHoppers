@@ -79,6 +79,7 @@ export default class DataController {
     }
   }
 
+
   static async updateDataValue(req, res, next) {
     const value = req.body.value; // Assuming the itemId is passed as a route parameter
 
@@ -144,4 +145,18 @@ export default class DataController {
       res.status(500).json({ error: err });
     }
   }
+  // data.controller.mjs
+static async getSalesByDate(req, res, next) {
+    const date = req.query.date; // Assuming the date is passed as a query parameter
+
+    try {
+        const sales = await DataDAO.getSalesByDate(date);
+        res.json(sales);
+    } catch (err) {
+        console.error(`Error getting sales by date: ${err}`);
+        res.status(500).json({ error: err });
+    }
+}
+
+
 }

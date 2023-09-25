@@ -149,4 +149,36 @@ export default class DataDAO {
       throw err;
     }
   }
+
+  static async getSalesByDate(date) {
+  if (!sale) {
+    throw new Error("DataDAO not initialized");
+  }
+
+  try {
+    const pipeline = [
+      {
+        $match: {
+          timestamp: date,
+        },
+      },
+      {
+        $unwind: "$products", // Unwind the products array
+      },
+      {
+        $group: {
+          _id: "$products.productName", // Group by product name
+          totalQuantity: { $sum: "$products.quantity" }, // Sum the quantities for each product
+        },
+      },
+    ];
+
+    const result = await sale.aggregate(pipeline).toArray();
+    return result;
+  } catch (err) {
+    console.error(`Error getting sales by date: ${err}`);
+    throw err;
+  }
+}
+
 }
