@@ -1,21 +1,44 @@
-import React, { useState, useEffect } from 'react'; // Import useState
-import { useTheme } from '@mui/material/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer, Tooltip, BarChart, Bar, Pie } from 'recharts';
-import Title from '../title';
-import { EventTracker } from '@devexpress/dx-react-chart';
-import useSalesData from './useSalesData';
-
-
-import { PieChart } from '@mui/x-charts/PieChart';
+import React, { useState, useEffect } from "react"; // Import useState
+import { useTheme } from "@mui/material/styles";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Label,
+  ResponsiveContainer,
+  Tooltip,
+  BarChart,
+  Bar,
+  Pie,
+} from "recharts";
+import Title from "../title";
+import { EventTracker } from "@devexpress/dx-react-chart";
+import useSalesData from "./useSalesData";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const monthLabels = [
-  "January", "February", "March", "April", "May", "June", "July",
-  "August", "September", "October", "November", "December"
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const MonthlySales = () => {
   const theme = useTheme();
-  const data = useSalesData('monthly');
+  const data = useSalesData("monthly");
 
   // Group data by month and calculate total sales for each month
   const monthlyData = data.reduce((result, item) => {
@@ -63,7 +86,7 @@ const MonthlySales = () => {
               angle={270}
               position="left"
               style={{
-                textAnchor: 'middle',
+                textAnchor: "middle",
                 fill: theme.palette.text.primary,
                 ...theme.typography.body1,
               }}
@@ -89,18 +112,32 @@ const MonthlySales = () => {
 const Topsell = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [value, setValue] = React.useState(null);
 
   useEffect(() => {
+    // Get today's date and format it as "Month Day, Year"
+    const currentDate = new Date();
+    const formattedDate = currentDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+
+    // Update the API URL with the formatted date
+    const apiUrl = `http://localhost:8080/api/v1/data/sales?date=${encodeURIComponent(
+      formattedDate
+    )}`;
+    console.log("URL end:", apiUrl);
     // Make a GET request to your API
-    fetch('http://localhost:8080/api/v1/data/sales?date=September%2020,%202023')
+    fetch(apiUrl)
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         return response.json();
       })
       .then((apiData) => {
-        console.log('API Data:', apiData);
+        console.log("API Data:", apiData);
         if (Array.isArray(apiData) && apiData.length > 0) {
           // Process the data into the format expected by PieChart
           const chartData = apiData.map((item) => ({
@@ -116,10 +153,10 @@ const Topsell = () => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
         setLoading(false);
       });
-  }, []);
+  }, [value]);
 
   return (
     <div>
@@ -128,31 +165,38 @@ const Topsell = () => {
         <p>Loading...</p>
       ) : (
         <>
-          {data.length > 0 ? (
-            <PieChart
-              series={[
-                {
-                  data: data, // Use chartData here
-                },
-              ]}
-              width={500}
-              height={500}
-            />
-          ) : (
-            <p>No data available.</p>
-          )}
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={["DatePicker"]}>
+                <DatePicker
+                  value={value}
+                  onChange={(newValue) => setValue(newValue)}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+            {data.length > 0 ? (
+              <PieChart
+                series={[
+                  {
+                    data: data, // Use chartData here
+                  },
+                ]}
+                width={550}
+                height={400}
+              />
+            ) : (
+              <p>No data available.</p>
+            )}
+          </div>
         </>
       )}
     </div>
   );
-}
-
-
-
+};
 
 const Chart = () => {
   const theme = useTheme();
-  const data = useSalesData('daily');
+  const data = useSalesData("daily");
   const reversedData = data.slice(0, 30).reverse();
   return (
     <React.Fragment>
@@ -180,7 +224,7 @@ const Chart = () => {
               angle={270}
               position="left"
               style={{
-                textAnchor: 'middle',
+                textAnchor: "middle",
                 fill: theme.palette.text.primary,
                 ...theme.typography.body1,
               }}
@@ -202,8 +246,5 @@ const Chart = () => {
     </React.Fragment>
   );
 };
-
-
-
 
 export { Chart, MonthlySales, Topsell };
